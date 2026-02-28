@@ -1,0 +1,260 @@
+2026-02-27 14:38:25,621 | INFO     | main | Marathon News Bot initialising…
+2026-02-27 14:38:25,791 | INFO     | database | Database initialised at marathon_bot.db
+2026-02-27 14:38:25,792 | INFO     | main | DB stats: {'total': 0, 'by_source': {}}
+2026-02-27 14:38:26,635 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:38:26,636 | INFO     | main | ─── Starting news cycle (2026-02-27T11:38:26.636487) ───
+2026-02-27 14:38:27,281 | WARNING  | BungieParser | Bungie API returned 404
+2026-02-27 14:38:27,319 | WARNING  | YouTubeParser | YouTube RSS returned 404
+2026-02-27 14:38:27,459 | INFO     | httpx | HTTP Request: GET https://old.reddit.com/r/Marathon/new "HTTP/1.1 403 Blocked"
+2026-02-27 14:38:27,472 | ERROR    | RedditParser | Reddit parsing error: Client error '403 Blocked' for url 'https://old.reddit.com/r/Marathon/new'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\parsers\reddit.py", line 143, in _fetch_sync
+    posts = parse_subreddit(SUBREDDIT)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\parsers\reddit.py", line 44, in parse_subreddit
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\httpx\_models.py", line 761, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Blocked' for url 'https://old.reddit.com/r/Marathon/new'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-02-27 14:38:29,106 | INFO     | main | Fetched 45 total items across all sources.
+2026-02-27 14:38:29,116 | INFO     | main | 45 new (unprocessed) items to evaluate.
+2026-02-27 14:38:29,120 | INFO     | main | Items sorted by published date (oldest first).
+2026-02-27 14:39:09,973 | INFO     | main | Marathon News Bot initialising…
+2026-02-27 14:39:09,974 | INFO     | database | Database initialised at marathon_bot.db
+2026-02-27 14:39:09,974 | INFO     | main | DB stats: {'total': 0, 'by_source': {}}
+2026-02-27 14:39:10,260 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:10,261 | INFO     | main | ─── Starting news cycle (2026-02-27T11:39:10.261765) ───
+2026-02-27 14:39:10,615 | WARNING  | BungieParser | Bungie API returned 404
+2026-02-27 14:39:10,616 | WARNING  | YouTubeParser | YouTube RSS returned 404
+2026-02-27 14:39:10,974 | INFO     | httpx | HTTP Request: GET https://old.reddit.com/r/Marathon/new "HTTP/1.1 301 Moved Permanently"
+2026-02-27 14:39:11,590 | INFO     | httpx | HTTP Request: GET https://old.reddit.com/r/Marathon/new/ "HTTP/1.1 200 OK"
+2026-02-27 14:39:31,273 | WARNING  | TwitterParser | All Nitter instances failed. Twitter feed unavailable. Consider using the official Twitter API.
+2026-02-27 14:39:31,273 | INFO     | main | Fetched 26 total items across all sources.
+2026-02-27 14:39:31,279 | INFO     | main | 26 new (unprocessed) items to evaluate.
+2026-02-27 14:39:31,282 | INFO     | main | Items sorted by published date (oldest first).
+2026-02-27 14:39:31,431 | ERROR    | ai_processor | AI processing failed for 'Pre-Order Now': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,436 | ERROR    | ai_processor | AI processing failed for 'Pre-Order Now': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,437 | ERROR    | ai_processor | AI processing failed for 'Pre-Order Now': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,439 | ERROR    | ai_processor | AI processing failed for 'Pre-Order Now': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,440 | ERROR    | ai_processor | AI processing failed for 'see all news': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,542 | ERROR    | ai_processor | AI processing failed for 'wishlist now': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,551 | ERROR    | ai_processor | AI processing failed for 'Marathon Closed Alpha Update': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,553 | ERROR    | ai_processor | AI processing failed for 'Marathon Hands-On Preview — A Day In The Life Of A Corpo Reclaimer': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,556 | ERROR    | ai_processor | AI processing failed for 'Marathon Closed Alpha Update 0.5.0.2': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,556 | ERROR    | ai_processor | AI processing failed for 'A streamer played an hour of Marathon early before Bungie cut him off': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,652 | ERROR    | ai_processor | AI processing failed for 'Marathon Development Update': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,667 | ERROR    | ai_processor | AI processing failed for 'Steam sign-ups are live!': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,669 | ERROR    | ai_processor | AI processing failed for 'Apply Now: Marathon Closed Technical Test': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,677 | ERROR    | ai_processor | AI processing failed for 'Vision of Marathon: New Gameplay, Dev Insights, & More': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,679 | ERROR    | ai_processor | AI processing failed for 'Sony are confident Marathon will release by March 2026 and that their live service transition is paying off': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,770 | ERROR    | ai_processor | AI processing failed for 'Dev Insights: Runner Shells – New Video': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,785 | ERROR    | ai_processor | AI processing failed for 'Marathon from Bungie is out March 5th - likely unplayable on SteamOS Linux': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,787 | ERROR    | ai_processor | AI processing failed for 'Marathon Releases March 5: New Trailer & More': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,795 | ERROR    | ai_processor | AI processing failed for 'Assassin Shell Cinematic | Marathon': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,798 | ERROR    | ai_processor | AI processing failed for 'Destroyer Shell Cinematic | Marathon': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,882 | ERROR    | ai_processor | AI processing failed for 'Marathon’s Server Slam Begins February 26': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,902 | ERROR    | ai_processor | AI processing failed for 'DEATH AWAITS | Marathon Gameplay Trailer': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,903 | ERROR    | ai_processor | AI processing failed for 'Music of Marathon | Dev Insights Video': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,911 | ERROR    | ai_processor | AI processing failed for 'Rook Cinematic': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,914 | ERROR    | ai_processor | AI processing failed for 'Marathon’s Server Slam Is Almost Here': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:31,995 | ERROR    | ai_processor | AI processing failed for 'Play Marathon Now in the Server Slam': 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+Traceback (most recent call last):
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\ai_processor.py", line 93, in process_item
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\aiohttp\client_reqrep.py", line 1070, in raise_for_status
+    raise ClientResponseError(
+aiohttp.client_exceptions.ClientResponseError: 403, message='Forbidden', url=URL('https://api.groq.com/openai/v1/chat/completions')
+2026-02-27 14:39:34,586 | INFO     | main | 26 items passed AI relevance filter.
+2026-02-27 14:39:34,866 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:37,015 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:39,160 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:41,302 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:43,422 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:45,537 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:47,675 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:49,947 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:52,056 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:54,177 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:56,279 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:39:58,398 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:40:00,521 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:42:21,009 | INFO     | main | Marathon News Bot initialising…
+2026-02-27 14:42:21,010 | INFO     | database | Database initialised at marathon_bot.db
+2026-02-27 14:42:21,010 | INFO     | main | DB stats: {'total': 23, 'by_source': {'official_site': 3, 'steam': 20}}
+2026-02-27 14:42:21,837 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:42:21,838 | INFO     | main | ─── Starting news cycle (2026-02-27T11:42:21.838197) ───
+2026-02-27 14:42:22,445 | WARNING  | YouTubeParser | YouTube RSS returned 404
+2026-02-27 14:42:22,494 | WARNING  | BungieParser | Bungie API returned 404
+2026-02-27 14:42:22,648 | INFO     | httpx | HTTP Request: GET https://old.reddit.com/r/Marathon/new "HTTP/1.1 403 Blocked"
+2026-02-27 14:42:22,664 | ERROR    | RedditParser | Reddit parsing error: Client error '403 Blocked' for url 'https://old.reddit.com/r/Marathon/new'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+Traceback (most recent call last):
+  File "d:\Projects\Coding Projects\marathon-news-scrapper\parsers\reddit.py", line 143, in _fetch_sync
+    posts = parse_subreddit(SUBREDDIT)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\Projects\Coding Projects\marathon-news-scrapper\parsers\reddit.py", line 44, in parse_subreddit
+    resp.raise_for_status()
+  File "D:\Projects\Coding Projects\marathon-news-scrapper\venv\Lib\site-packages\httpx\_models.py", line 761, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '403 Blocked' for url 'https://old.reddit.com/r/Marathon/new'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403
+2026-02-27 14:42:23,982 | INFO     | main | Fetched 45 total items across all sources.
+2026-02-27 14:42:23,992 | INFO     | main | 19 new (unprocessed) items to evaluate.
+2026-02-27 14:42:23,995 | INFO     | main | Items sorted by published date (oldest first).
+2026-02-27 14:42:31,142 | INFO     | main | 19 items passed AI relevance filter.
+2026-02-27 14:42:32,444 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendPhoto "HTTP/1.1 200 OK"
+2026-02-27 14:42:34,905 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendPhoto "HTTP/1.1 200 OK"
+2026-02-27 14:42:37,206 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendMessage "HTTP/1.1 200 OK"
+2026-02-27 14:42:39,767 | INFO     | httpx | HTTP Request: POST https://api.telegram.org/bot8465334712:AAFsrYqh2iwDMsnS7wVzWNswWClGsoUclpA/sendPhoto "HTTP/1.1 200 OK"
