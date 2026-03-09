@@ -1,26 +1,18 @@
-"""
-main.py – Entry point for the Marathon News Bot.
-
-ИЗМЕНЕНИЯ:
-  - Новости сортируются по дате публикации (published) перед отправкой
-    → сначала старые, чтобы в Telegram лента шла в хронологическом порядке
-  - mark_processed теперь сохраняет published дату
-  - Вспомогательная функция _parse_date для унификации форматов дат
-"""
 from __future__ import annotations
 import asyncio
 import logging
 import sys
+import random
 from datetime import datetime, timezone
 from typing import List
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
-import config
-import database
-from ai_processor import process_item, ProcessedItem
-from parsers import __all__
+from core import database, config
+from core.ai_processor import process_item, ProcessedItem
+from utils.date_util import is_recent, is_today, _parse_date
+from utils.builder import build_parsers
 from telegram_sender import TelegramSender
 
 logging.basicConfig(
@@ -28,7 +20,7 @@ logging.basicConfig(
     format="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler("marathon_bot.log", encoding="utf-8"),
+        logging.FileHandler("network_bot.log", encoding="utf-8"),
     ],
 )
 logger = logging.getLogger("main")
@@ -36,71 +28,111 @@ logger = logging.getLogger("main")
 sender = TelegramSender()
 
 
-def _parse_date(date_str: str) -> datetime:
-    """
-    Парсит строку даты в datetime. Возвращает epoch (1970) если не удалось.
-    Поддерживает ISO-8601 и RFC-2822 (Reddit/RSS).
-    """
-    if not date_str:
-        return datetime(1970, 1, 1, tzinfo=timezone.utc)
-    # ISO-8601 (Steam, Bungie, Reddit JSON)
-    for fmt in ("%Y-%m-%dT%H:%M:%S%z", "%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m-%dT%H:%M:%S"):
-        try:
-            dt = datetime.strptime(date_str[:25], fmt)
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=timezone.utc)
-            return dt
-        except ValueError:
-            pass
-    # RFC-2822 (RSS feeds: "Mon, 02 Jan 2006 15:04:05 +0000")
-    try:
-        from email.utils import parsedate_to_datetime
-        return parsedate_to_datetime(date_str)
-    except Exception:
-        pass
-    return datetime(1970, 1, 1, tzinfo=timezone.utc)
-
-
 async def run_news_cycle() -> None:
-    logger.info("─── Starting news cycle (%s) ───", datetime.utcnow().isoformat())
+    logger.info("─── Starting news cycle (%s) ───", datetime.now(timezone.utc).isoformat())
 
-    # 1. Fetch от всех источников параллельно
-    tasks = [parser_cls().fetch() for parser_cls in __all__]
-    results = await asyncio.gather(*tasks, return_exceptions=True)
+    # 1️⃣ Строим парсеры из YAML
+    parsers_by_game: dict[str, list] = {}
+    for game, yaml_data in config.SOURCES_YAML.items():
+        parsers_by_game[game] = build_parsers(yaml_data)
 
+    # Плоский список всех парсеров
+    all_parsers = [p for game_parsers in parsers_by_game.values() for p in game_parsers]
+
+    # 2️⃣ Fetch от всех источников
     all_items = []
-    for i, result in enumerate(results):
-        if isinstance(result, Exception):
-            logger.warning("Parser %s raised: %s", __all__[i].SOURCE_NAME, result)
-        else:
-            all_items.extend(result)
+
+    twitter_parsers = [p for p in all_parsers if p.SOURCE_KEY.startswith("twitter:")]
+    reddit_parsers = [p for p in all_parsers if p.SOURCE_KEY.startswith("reddit:")]
+    other_parsers = [
+        p
+        for p in all_parsers
+        if not p.SOURCE_KEY.startswith("reddit:")
+        and not p.SOURCE_KEY.startswith("twitter:")
+    ]
+
+    # Параллельный fetch для RSS / YouTube / Steam
+    if other_parsers:
+        other_results = await asyncio.gather(
+            *[p.fetch() for p in other_parsers], return_exceptions=True
+        )
+        for parser, result in zip(other_parsers, other_results):
+            if isinstance(result, Exception):
+                logger.warning("Parser %s raised: %s", parser.SOURCE_NAME, result)
+            elif result:
+                all_items.extend(result)
+                logger.info("Parser %s fetched %d items", parser.SOURCE_NAME, len(result))
+
+    # Последовательный fetch для Reddit
+    for i, parser in enumerate(reddit_parsers):
+        if i > 0:
+            delay = random.uniform(6.0, 12.0)
+            logger.debug("Reddit delay %.1fs before %s", delay, parser.SOURCE_NAME)
+            await asyncio.sleep(delay)
+
+        try:
+            result = await parser.fetch()
+            if result:
+                all_items.extend(result)
+                logger.info("Parser %s fetched %d items", parser.SOURCE_NAME, len(result))
+        except Exception as e:
+            logger.warning("Parser %s raised: %s", parser.SOURCE_NAME, e)
+
+    # Последовательный fetch для Twitter
+    for i, parser in enumerate(twitter_parsers):
+        if i > 0:
+            delay = random.uniform(2.0, 4.0)
+            await asyncio.sleep(delay)
+
+        try:
+            result = await parser.fetch()
+            if result:
+                all_items.extend(result)
+                logger.info("Parser %s fetched %d items", parser.SOURCE_NAME, len(result))
+        except Exception as e:
+            logger.warning("Parser %s raised: %s", parser.SOURCE_NAME, e)
 
     logger.info("Fetched %d total items across all sources.", len(all_items))
 
-    # 2. Фильтр уже обработанных
-    new_items = [
-        item for item in all_items
-        if not database.is_processed(item.source_key, item.item_id)
-    ]
+    # 3️⃣ Фильтр новых
+    new_items: list = []
+    for game, parsers in parsers_by_game.items():
+        for parser in parsers:
+            key = f"{parser.SOURCE_KEY}:{parser.SOURCE_NAME}"
+            last_date = config.LAST_PROCESSED_DATE[game].get(
+                key, datetime(1970, 1, 1, tzinfo=timezone.utc)
+            )
+            items_source = [
+                item
+                for item in all_items
+                if item.source_key == parser.SOURCE_KEY
+                and not database.is_processed(item.source_key, item.item_id)
+                and _parse_date(item.published) > last_date
+                and is_today(item.published)
+            ]
+            if items_source:
+                latest = max(_parse_date(i.published) for i in items_source)
+                config.LAST_PROCESSED_DATE[game][key] = latest
+
+            new_items.extend(items_source[: config.MAX_PER_SOURCE])
+
     logger.info("%d new (unprocessed) items to evaluate.", len(new_items))
 
     if not new_items:
         logger.info("Nothing new. Sleeping until next cycle.")
         return
 
-    # ✅ Сортировка по дате публикации (от старых к новым)
-    # Так в Telegram лента идёт в хронологическом порядке
+    # 4️⃣ Сортировка
     new_items.sort(key=lambda item: _parse_date(item.published))
     logger.info("Items sorted by published date (oldest first).")
+    new_items = new_items[: config.MAX_ITEMS_PER_RUN]
 
-    # Лимит на количество за один цикл
-    new_items = new_items[: config.MAX_ITEMS_PER_RUN * len(__all__)]
-
-    # 3. AI-обработка параллельно (семафор = защита от rate limit)
-    semaphore = asyncio.Semaphore(5)
+    # 5️⃣ AI обработка
+    semaphore = asyncio.Semaphore(2)
 
     async def process_with_semaphore(item):
         async with semaphore:
+            await asyncio.sleep(3)
             return await process_item(item)
 
     processed_results = await asyncio.gather(
@@ -108,17 +140,16 @@ async def run_news_cycle() -> None:
         return_exceptions=True,
     )
 
+    # 6️⃣ Фильтрация
     relevant: List[ProcessedItem] = []
     for i, result in enumerate(processed_results):
         item = new_items[i]
         if isinstance(result, Exception):
             logger.warning("AI error for '%s': %s", item.title, result)
-            # ✅ Сохраняем published дату
             database.mark_processed(
                 item.source_key, item.item_id, item.url, item.title, item.published
             )
         elif result is not None:
-            # ✅ Сохраняем published дату
             database.mark_processed(
                 item.source_key, item.item_id, item.url, item.title, item.published
             )
@@ -129,6 +160,7 @@ async def run_news_cycle() -> None:
 
     logger.info("%d items passed AI relevance filter.", len(relevant))
 
+    # 7️⃣ Отправка в Telegram
     if relevant:
         sent = await sender.send_batch(relevant, delay=2.0)
         logger.info("Sent %d/%d messages to Telegram.", sent, len(relevant))
@@ -139,8 +171,7 @@ async def run_news_cycle() -> None:
 
 
 async def main() -> None:
-    logger.info("Marathon News Bot initialising…")
-
+    logger.info("Network Bot initialising…")
     database.init_db()
     stats = database.get_stats()
     logger.info("DB stats: %s", stats)
@@ -156,8 +187,8 @@ async def main() -> None:
     scheduler.add_job(
         run_news_cycle,
         trigger=IntervalTrigger(minutes=config.POLL_INTERVAL_MINUTES),
-        id="news_cycle",
-        name="Marathon News Cycle",
+        id="network_cycle",
+        name="Network Cycle",
         misfire_grace_time=60,
     )
     scheduler.start()

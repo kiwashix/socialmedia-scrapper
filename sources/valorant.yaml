@@ -1,0 +1,56 @@
+game: valorant
+
+sources:
+
+  reddit:
+    - id: valorant_reddit_main
+      type: reddit
+      subreddit: VALORANT
+      url: https://www.reddit.com/r/VALORANT/new.json
+
+    - id: valorant_reddit_competitive
+      type: reddit
+      subreddit: ValorantCompetitive
+      url: https://www.reddit.com/r/ValorantCompetitive/new.json
+
+    - id: valorant_reddit_agentacademy
+      type: reddit
+      subreddit: AgentAcademy
+      url: https://www.reddit.com/r/AgentAcademy/new.json
+
+  twitter:
+    - id: valorant_twitter_valorantleaks
+      type: twitter
+      username: ValorantLeaksEN
+
+    - id: valorant_twitter_valorantupdated
+      type: twitter
+      username: ValorantUpdated
+
+    - id: valorant_twitter_valorantintel
+      type: twitter
+      username: ValorINTEL
+
+  youtube:
+    - id: valorant_youtube_official
+      type: youtube
+      channel: VALORANT
+      channel_id: UC8CX0LD98EDXl4UYX1MDCXg
+
+    - id: valorant_youtube_vct
+      type: youtube
+      channel: VALORANTChampionsTour
+      channel_id: UCA1d3HFGFUmkKr2JIUA5Vlw
+
+  websites:
+    - id: valorant_site_vlr
+      type: rss
+      url: https://www.vlr.gg/rss
+
+    - id: valorant_site_dexerto
+      type: rss
+      url: https://www.dexerto.com/valorant/feed/
+
+    - id: valorant_site_dotesports
+      type: rss
+      url: https://dotesports.com/feed

@@ -1,27 +1,28 @@
 """
-parsers/steam.py – Watches the Steam store news feed for Marathon (App ID 3065800).
+parsers/steam.py – Watches the Steam store news feed.
 Steam provides a public news RSS/JSON endpoint for every game – no auth required.
 """
 from __future__ import annotations
 from typing import List
-
 import aiohttp
-
 from parsers.base import BaseParser, NewsItem
-
-MARATHON_APP_ID = 3065800
-STEAM_NEWS_URL = (
-    f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/"
-    f"?appid={MARATHON_APP_ID}&count=20&maxlength=1500&format=json"
-)
 
 
 class SteamParser(BaseParser):
-    SOURCE_NAME = "Steam – Marathon"
-    SOURCE_KEY = "steam"
+    def __init__(self, source_config: dict):
+        super().__init__()
+        
+        self.config = source_config
+        self.SOURCE_NAME = source_config['id']
+        self.SOURCE_KEY = f"{source_config['type']}:{source_config['id']}"
+        self.APP_ID = source_config['app_id']
 
     async def fetch(self) -> List[NewsItem]:
         items: List[NewsItem] = []
+        STEAM_NEWS_URL = (
+            f"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/"
+            f"?appid={self.APP_ID}&count=20&maxlength=1500&format=json"
+        )
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(

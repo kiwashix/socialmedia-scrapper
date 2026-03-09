@@ -1,3 +1,5 @@
 __pycache__
 venv
 .env
+network_bot.db
+network_bot.log

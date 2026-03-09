@@ -1,0 +1,53 @@
+game: pubg
+
+sources:
+
+  steam:
+    - id: pubg_steam_news
+      type: steam
+      app_id: 578080
+      url: https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=578080
+
+  reddit:
+    - id: pubg_reddit_main
+      type: reddit
+      subreddit: PUBG
+      url: https://www.reddit.com/r/PUBG/new.json
+
+    - id: pubg_reddit_battlegrounds
+      type: reddit
+      subreddit: PUBATTLEGROUNDS
+      url: https://www.reddit.com/r/PUBATTLEGROUNDS/new.json
+
+  twitter:
+    - id: pubg_twitter_official
+      type: twitter
+      username: PUBG
+
+    - id: pubg_twitter_esports
+      type: twitter
+      username: PUBGEsports
+
+    - id: pubg_twitter_playerign
+      type: twitter
+      username: PlayerIGN
+
+  youtube:
+    - id: pubg_youtube_official
+      type: youtube
+      channel: PUBG
+      channel_id: UCnXDQbqIdp-HQuDyM4p12ng
+
+    - id: pubg_youtube_esports
+      type: youtube
+      channel: PUBGesports
+      channel_id: UCLgYa1O5NodobOaDK6xj5aQ
+
+  websites:
+    - id: pubg_site_dexerto
+      type: rss
+      url: https://www.dexerto.com/pubg/feed/
+
+    - id: pubg_site_esportsgg
+      type: rss
+      url: https://esports.gg/feed

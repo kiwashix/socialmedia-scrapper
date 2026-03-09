@@ -11,8 +11,8 @@ from telegram import Bot
 from telegram.constants import ParseMode
 from telegram.error import TelegramError
 
-from config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
-from ai_processor import ProcessedItem
+from core.config import TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID
+from core.ai_processor import ProcessedItem
 
 logger = logging.getLogger(__name__)
 
@@ -75,16 +75,19 @@ class TelegramSender:
 
     async def send_startup_message(self) -> None:
         msg = (
-            "🤖 <b>Marathon News Bot started!</b>\n\n"
-            "I'll now monitor these sources for Marathon news:\n"
-            "• 🌐 Bungie.net\n"
-            "• 💬 Reddit r/Marathon\n"
-            "• 🐦 Twitter @MarathonTheGame\n"
-            "• ▶️ YouTube (Bungie channel)\n"
-            "• 🎮 Steam store news\n"
-            "• 📰 IGN, PCGamer, GamesRadar, Kotaku, Eurogamer & more\n"
-            "• 🏠 marathonthegame.com\n\n"
-            "I'll post updates every time new content is found. Stay tuned! 🎯"
+            "🤖 <b>Бот сетки запущен!</b>\n\n"
+            "🔎 Начинаю мониторить новости по:\n"
+            "• CS2\n"
+            "• MARATHON\n"
+            "• PUBG\n"
+            "• VALORANT\n"
+            "🤔 Буду мониторить:\n"
+            "• Reddit\n"
+            "• RSS ленты\n"
+            "• Steam страницы\n"
+            "• X (Twitter)\n"
+            "• YouTube\n\n"
+            "🔥 Как только появятся новости - дам тебе знать!"
         )
         await self._send_text(msg)
 

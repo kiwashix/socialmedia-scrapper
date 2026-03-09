@@ -1,0 +1,66 @@
+game: cs2
+
+sources:
+
+  steam:
+    - id: cs2_steam_news
+      type: steam
+      app_id: 730
+      url: https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid=730
+
+  reddit:
+    - id: cs2_reddit_cs2
+      type: reddit
+      subreddit: cs2
+      url: https://www.reddit.com/r/cs2/new.json
+
+    - id: cs2_reddit_globaloffensive
+      type: reddit
+      subreddit: GlobalOffensive
+      url: https://www.reddit.com/r/GlobalOffensive/new.json
+
+    - id: cs2_reddit_counterstrike
+      type: reddit
+      subreddit: counterstrike
+      url: https://www.reddit.com/r/counterstrike/new.json
+
+  twitter:
+    - id: cs2_twitter_gabefollower
+      type: twitter
+      username: gabe_follower
+
+    - id: cs2_twitter_thour
+      type: twitter
+      username: ThourCS
+
+    - id: cs2_twitter_cs2news
+      type: twitter
+      username: CS2News_EN
+
+    - id: cs2_twitter_cs2updates
+      type: twitter
+      username: cs2newsupdate
+
+  youtube:
+    - id: cs2_youtube_3kliksphilip
+      type: youtube
+      channel: 3kliksphilip
+      channel_id: UCmu9PVIZBk-ZCi-Sk2F2utA
+
+    - id: cs2_youtube_lukeeats
+      type: youtube
+      channel: LukeEats
+      channel_id: UC_KjxliU0tuFIHBhELD9jZA
+
+  websites:
+    - id: cs2_site_hltv
+      type: website
+      url: https://www.hltv.org/news
+
+    - id: cs2_site_dexerto
+      type: rss
+      url: https://www.dexerto.com/counter-strike/feed/
+
+    - id: cs2_site_dotesports
+      type: rss
+      url: https://dotesports.com/feed

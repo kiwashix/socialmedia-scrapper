@@ -1,0 +1,44 @@
+game: marathon
+
+sources:
+
+  reddit:
+    - id: marathon_reddit_main
+      type: reddit
+      subreddit: Marathon
+      url: https://www.reddit.com/r/Marathon/new.json
+
+    - id: marathon_reddit_marathonthegame
+      type: reddit
+      subreddit: MarathonTheGame
+      url: https://www.reddit.com/r/MarathonTheGame/new.json
+
+    - id: marathon_reddit_bungie
+      type: reddit
+      subreddit: Bungie
+      url: https://www.reddit.com/r/Bungie/new.json
+
+
+  twitter:
+    - id: marathon_twitter_official
+      type: twitter
+      username: MarathonTheGame
+
+    - id: marathon_twitter_bungie
+      type: twitter
+      username: Bungie
+
+    - id: marathon_twitter_marathonbulletin
+      type: twitter
+      username: MarathonBulletin
+
+    - id: marathon_twitter_bungieleaks
+      type: twitter
+      username: BungieLeaks
+
+
+  youtube:
+    - id: marathon_youtube
+      type: youtube
+      channel: Marathon
+      channel_id: UCBsbrudhKRrT9zs8iNOEjjw

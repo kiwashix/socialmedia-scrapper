@@ -4,22 +4,13 @@ import logging
 from dataclasses import dataclass
 from typing import Optional
 
-import aiohttp  # ✅ async, не блокирует event loop
-
-from config import GROQ_API_KEY, SUMMARY_LANGUAGE
+from core.config import SUMMARY_LANGUAGE
 from parsers.base import NewsItem
+from core.deepseek import get_deepseek_response
+from core.groq import get_groq_response
+from core.scitely import get_scitely_response
 
 logger = logging.getLogger(__name__)
-
-URL = "https://api.groq.com/openai/v1/chat/completions"
-# Актуальная бесплатная модель Groq (gpt-oss-120b не существует)
-MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
-
-# ✅ dict с правильными ключами (было: set из строк вида "Key: Value")
-HEADERS = {
-    "Authorization": f"Bearer {GROQ_API_KEY}",
-    "Content-Type": "application/json",
-}
 
 
 @dataclass
@@ -32,17 +23,15 @@ class ProcessedItem:
     formatted_message: str
 
 
-SYSTEM_PROMPT = f"""You are a news curator for a Telegram channel about the video game
-"Marathon" by Bungie studio (2026 extraction shooter). Your job is to process raw news
-items and decide whether they are worth sending to subscribers.
+SYSTEM_PROMPT = f"""You are a news curator for a Telegram channel about the video games.
+Your job is to process raw news items and decide whether they are worth sending to subscribers.
 
 Your tasks for each item:
-1. RELEVANCE CHECK: Is this genuinely about Marathon (the Bungie game)?
-   Not about the sport marathon, not about old Marathon games unless related to the new one.
+1. RELEVANCE CHECK: Is this genuinely about VALORANT/MARATHON (by Bungie Studio)/CS2/PUBG?
    Return is_relevant: true/false.
 
 2. CATEGORY: Classify as one of:
-   "Official Update" – directly from Bungie/official channels
+   "Official Update" – directly from official channels
    "Media" – trailers, screenshots, videos, gameplay footage
    "Community" – notable Reddit/fan posts, fan art, discussions
    "News" – third-party journalism / reviews / previews
@@ -61,6 +50,7 @@ Respond ONLY in this exact JSON format (no markdown, no extra text):
   "summary": "Your 2-3 sentence summary here."
 }}"""
 
+AI_ENDPOINTS = [get_deepseek_response, get_groq_response, get_scitely_response]
 
 async def process_item(item: NewsItem) -> Optional[ProcessedItem]:
     """Run a NewsItem through Groq LLM and return a ProcessedItem."""
@@ -71,30 +61,27 @@ Published: {item.published}
 Author: {item.author}
 
 Content:
-{item.body[:1200]}"""
+{item.body[:6000]}"""
 
     try:
-        # ✅ aiohttp.post вместо requests.get — async + правильный метод
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                URL,
-                headers=HEADERS,
-                json={
-                    "model": MODEL,
-                    "messages": [
-                        {"role": "system", "content": SYSTEM_PROMPT},
-                        {"role": "user", "content": prompt},
-                    ],
-                    "temperature": 0.7,
-                    "max_tokens": 750,
-                },
-                timeout=aiohttp.ClientTimeout(total=30),
-            ) as resp:
-                resp.raise_for_status()
-                data_resp = await resp.json()
-
-        raw = data_resp["choices"][0]["message"]["content"].strip()
-        # Убираем возможные markdown-обёртки ```json ... ```
+        raw = None
+        for endpoint in AI_ENDPOINTS:
+            try:
+                resp = await endpoint(SYSTEM_PROMPT, prompt)
+                if resp is not None:
+                    raw = resp
+                    logger.info(f"Endpoint {endpoint.__name__} succeeded")
+                    break
+                else:
+                    logger.warning(f"Endpoint {endpoint.__name__} returned None")
+            except Exception as e:
+                logger.warning(f"Endpoint {endpoint.__name__} raised exception: {e}")
+                continue
+        
+        if raw is None:
+            logger.error("All AI endpoints failed - using fallback")
+            return _fallback_process(item)
+                
         if raw.startswith("```"):
             raw = raw.split("```")[1]
             if raw.startswith("json"):
@@ -148,6 +135,8 @@ def _format_telegram_message(
 
 
 def _fallback_process(item: NewsItem) -> ProcessedItem:
+    """Fallback when AI is unavailable. Marks as processed but NOT relevant —
+    prevents spam when the AI API is broken."""
     msg = (
         f"📰 <b>{_esc(item.title)}</b>\n"
         f"<i>{_esc(item.source)}</i>\n\n"
@@ -155,7 +144,7 @@ def _fallback_process(item: NewsItem) -> ProcessedItem:
     )
     return ProcessedItem(
         original=item,
-        is_relevant=True,
+        is_relevant=False,  # не отправляем если AI недоступен
         category="News",
         summary=item.title,
         emoji="📰",

@@ -10,7 +10,7 @@ import sqlite3
 import logging
 from contextlib import contextmanager
 from datetime import datetime
-from config import DB_PATH
+from core.config import DB_PATH
 
 logger = logging.getLogger(__name__)
 
